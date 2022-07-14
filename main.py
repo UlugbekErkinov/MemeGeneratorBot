@@ -73,7 +73,7 @@ def queryHandler(update: Update, context: CallbackContext):
     if "yoqmadi" in query:
         dislikes += 1
 
-    print(f"yoqqanlari => {likes} va yoqmagalari => {dislikes}")
+    print(f"yoqqanlari = {likes} \n yoqmagalari = {dislikes}")
 
 
 dispatcher = updater.dispatcher
