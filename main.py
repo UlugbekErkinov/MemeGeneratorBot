@@ -45,7 +45,7 @@ def message(update: Update, context: CallbackContext):
                 InputMediaPhoto(meme, caption="")])
 
         buttons = [[InlineKeyboardButton("👍", callback_data="yoqdi")], [
-            InlineKeyboardButton("👎", callback_data="yoqmadi")]]
+            InlineKeyboardButton("👎", callback_data="yoqmadi")], [InlineKeyboardButton("◀️", callback_data="Orqaga")], [InlineKeyboardButton("➡️", callback_data="Keyingisi")]]
         context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(
             buttons), text="Meme kulgulimi 😁?")
 
@@ -56,12 +56,15 @@ def message(update: Update, context: CallbackContext):
                 InputMediaPhoto(image, caption="")])
 
         buttons = [[InlineKeyboardButton("👍", callback_data="yoqdi")], [
-            InlineKeyboardButton("👎", callback_data="yoqmadi")]]
+            InlineKeyboardButton("👎", callback_data="yoqmadi")], [InlineKeyboardButton("◀️", callback_data="Orqaga")], [InlineKeyboardButton("➡️", callback_data="Keyingisi")]]
         context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(
             buttons), text="Rasm yoqdimi?")
 
 
-def query(update: Update, context: CallbackContext):
+
+
+
+def query(update: Update, context: CallbackContext)->None:
     query = update.callback_query.data
     update.callback_query.answer()
 
