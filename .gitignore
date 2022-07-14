@@ -1,88 +1,44 @@
-bin/
-django_log/
-include/
-lib/
-static_root/
-share/
-media/
-src/static
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,venv
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,venv
 
-# fow windows
-Scripts/
-tcl/
-
+### venv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
 pip-selfcheck.json
 
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 
-*.sqlite3
+# Local History for Visual Studio Code
+.history/
 
-# C extensions
-*.so
+# Built Visual Studio Code Extensions
+*.vsix
 
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-core_venv/
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
+# Support for Project snippet scope
+.vscode/*.code-snippets
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+# Ignore code-workspaces
+*.code-workspace
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,venv
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*,cover
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-/.idea/
-.idea/
-*/_log
-*.*~
