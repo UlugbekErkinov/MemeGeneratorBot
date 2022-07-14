@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 
 updater = Updater(token="5522269859:AAHYiP4qDKtVndALtubKKDa1tAg1XZ272Pc")
 
-MemeText = "Meme"
-ImageText = "Image"
+MemeText = "Memlar"
+ImageText = "Rasmlar"
 
 MemeUrl = "https://api.memegen.link/images/buzz/memes/memes_everywhere.gif"
 ImageUrl = "https://picsum.photos/200"
@@ -25,7 +25,7 @@ dislikes = 0
 allowedUsernames = ['vonikreus']
 
 
-def startCommand(update: Update, context: CallbackContext):
+def start(update: Update, context: CallbackContext):
     user = update.effective_user['first_name']
     buttons = [[KeyboardButton(ImageText)], [
         KeyboardButton(MemeText)]]
@@ -33,7 +33,7 @@ def startCommand(update: Update, context: CallbackContext):
                              text=f"Assalom alleykum, xush kelibsiz {user}!", reply_markup=ReplyKeyboardMarkup(buttons))
 
 
-def messageHandler(update: Update, context: CallbackContext):
+def message(update: Update, context: CallbackContext):
     if update.effective_chat.username not in allowedUsernames:
         context.bot.send_message(
             chat_id=update.effective_chat.id, text="Siz botdan foydalanish huquqiga ega emassiz!")
@@ -61,7 +61,7 @@ def messageHandler(update: Update, context: CallbackContext):
             buttons), text="Rasm yoqdimi?")
 
 
-def queryHandler(update: Update, context: CallbackContext):
+def query(update: Update, context: CallbackContext):
     query = update.callback_query.data
     update.callback_query.answer()
 
@@ -73,12 +73,12 @@ def queryHandler(update: Update, context: CallbackContext):
     if "yoqmadi" in query:
         dislikes += 1
 
-    print(f"yoqqanlari => {likes} va yoqmagalari => {dislikes}")
+    print(f"yoqqanlari -> {likes} va yoqmagalari -> {dislikes}")
 
 
 dispatcher = updater.dispatcher
-dispatcher.add_handler(CommandHandler("start", startCommand))
-dispatcher.add_handler(MessageHandler(Filters.text, messageHandler))
-dispatcher.add_handler(CallbackQueryHandler(queryHandler))
+dispatcher.add_handler(CommandHandler("start", start))
+dispatcher.add_handler(MessageHandler(Filters.text, message))
+dispatcher.add_handler(CallbackQueryHandler(query))
 
 updater.start_polling()
