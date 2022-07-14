@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 
 updater = Updater(token="5522269859:AAHYiP4qDKtVndALtubKKDa1tAg1XZ272Pc")
 
-MemeText = "Meme"
-ImageText = "Image"
+MemeText = "Memlar"
+ImageText = "Rasmlar"
 
 MemeUrl = "https://api.memegen.link/images/buzz/memes/memes_everywhere.gif"
 ImageUrl = "https://picsum.photos/200"
