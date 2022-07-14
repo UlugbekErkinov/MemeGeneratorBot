@@ -1,49 +1,84 @@
-# -*- coding: utf-8 -*-
+from telegram import *
+from telegram.ext import *
+from requests import *
 
-# Copyright (C) 2020 Botir Ziyatov <botirziyatov@gmail.com>
-# This program is free software: you can redistribute it and/or modify
+import logging
 
-from telegram import ReplyKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
-from covid19 import Covid19
-
-buttons = ReplyKeyboardMarkup([['Statistika'], ['Dunyo']], resize_keyboard=True)
-covid = Covid19()
-
-def start(update, context):
-    update.message.reply_html(
-        '<b>Assalomu alaykum, {}</b>\n \nMen Koronovirus statistikasi haqida ma`lumot beruvchi botman'.format(update.message.from_user.first_name), reply_markup=buttons)
-    return 1
-
-def stats(update, context):
-    data = covid.getByCountryCode('UZ')
-    update.message.reply_html(
-        '🇺🇿 <b>O‘zbekistonda</b>\n \n<b>Yuqtirganlar:</b> {}\n<b>Sog‘ayganlar:</b> {}\n<b>Vafot etganlar:</b> {}'.
-            format(
-            data['confirmed'],
-            data['recovered'],
-            data['deaths']), reply_markup=buttons)
-
-def world(update, context):
-    data = covid.getLatest()
-    update.message.reply_html(
-        '🌎 <b>Dunyoda</b>\n \n<b>Yuqtirganlar:</b> {}\n<b>Sog‘ayganlar:</b> {}\n<b>Vafot etganlar:</b> {}'.format(
-            "{:,}".format(data['confirmed']),
-            "{:,}".format(data['recovered']),
-            "{:,}".format(data['deaths'])
-        ), reply_markup=buttons)
-
-updater = Updater('TOKEN', use_context=True)
-conv_handler = ConversationHandler(
-    entry_points = [CommandHandler('start', start)],
-    states={
-        1: [MessageHandler(Filters.regex('^(Statistika)$'), stats),
-            MessageHandler(Filters.regex('^(Dunyo)$'), world),
-            ]
-    },
-    fallbacks=[MessageHandler(Filters.text, start)]
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 
-updater.dispatcher.add_handler(conv_handler)
+logger = logging.getLogger(__name__)
+
+
+updater = Updater(token="5522269859:AAHYiP4qDKtVndALtubKKDa1tAg1XZ272Pc")
+
+MemeText = "Meme"
+ImageText = "Image"
+
+MemeUrl = "https://api.memegen.link/images/buzz/memes/memes_everywhere.gif"
+ImageUrl = "https://picsum.photos/200"
+
+likes = 0
+dislikes = 0
+
+allowedUsernames = ['vonikreus']
+
+
+def startCommand(update: Update, context: CallbackContext):
+    user = update.effective_user['first_name']
+    buttons = [[KeyboardButton(ImageText)], [
+        KeyboardButton(MemeText)]]
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text=f"Assalom alleykum, xush kelibsiz {user}!", reply_markup=ReplyKeyboardMarkup(buttons))
+
+
+def messageHandler(update: Update, context: CallbackContext):
+    if update.effective_chat.username not in allowedUsernames:
+        context.bot.send_message(
+            chat_id=update.effective_chat.id, text="Siz botdan foydalanish huquqiga ega emassiz!")
+        return
+    if MemeText in update.message.text:
+        meme = get(MemeUrl).content
+        if meme:
+            context.bot.sendMediaGroup(chat_id=update.effective_chat.id, media=[
+                InputMediaPhoto(meme, caption="")])
+
+        buttons = [[InlineKeyboardButton("👍", callback_data="yoqdi")], [
+            InlineKeyboardButton("👎", callback_data="yoqmadi")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(
+            buttons), text="Meme kulgulimi 😁?")
+
+    if ImageText in update.message.text:
+        image = get(ImageUrl).content
+        if image:
+            context.bot.sendMediaGroup(chat_id=update.effective_chat.id, media=[
+                InputMediaPhoto(image, caption="")])
+
+        buttons = [[InlineKeyboardButton("👍", callback_data="yoqdi")], [
+            InlineKeyboardButton("👎", callback_data="yoqmadi")]]
+        context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=InlineKeyboardMarkup(
+            buttons), text="Rasm yoqdimi?")
+
+
+def queryHandler(update: Update, context: CallbackContext):
+    query = update.callback_query.data
+    update.callback_query.answer()
+
+    global likes, dislikes
+
+    if "yoqdi" in query:
+        likes += 1
+
+    if "yoqmadi" in query:
+        dislikes += 1
+
+    print(f"yoqqanlari => {likes} va yoqmagalari => {dislikes}")
+
+
+dispatcher = updater.dispatcher
+dispatcher.add_handler(CommandHandler("start", startCommand))
+dispatcher.add_handler(MessageHandler(Filters.text, messageHandler))
+dispatcher.add_handler(CallbackQueryHandler(queryHandler))
+
 updater.start_polling()
-updater.idle()
