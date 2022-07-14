@@ -76,7 +76,11 @@ def query(update: Update, context: CallbackContext)->None:
     if "yoqmadi" in query:
         dislikes += 1
 
+<<<<<<< HEAD
     print(f"yoqqanlari -> {likes} va yoqmagalari -> {dislikes}")
+=======
+    print(f"yoqqanlari = {likes} \n yoqmagalari = {dislikes}")
+>>>>>>> 6f3b9fc894799c048ac88cd41dcec67e305ce94f
 
 
 dispatcher = updater.dispatcher
